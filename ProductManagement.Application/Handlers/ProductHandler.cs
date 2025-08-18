@@ -98,7 +98,7 @@ namespace ProductManagement.Application.Handlers
 
                 await _repository.UpdateAsync(existingProduct);
 
-                // Cache invalidation
+                
                 await _cacheService.RemovePatternAsync("products:*");
                 await _cacheService.RemoveAsync($"product:{existingProduct.Id}");
 

@@ -36,7 +36,7 @@ namespace ProductManagement.Infrastructure.Data
            
             modelBuilder.Entity<Product>(entity =>
             {
-                entity.HasIndex(e => e.SKU).IsUnique().HasFilter("[SKU] IS NOT NULL");
+                entity.HasIndex(e => e.SKU).IsUnique().HasFilter("\"SKU\" IS NOT NULL");
                 entity.Property(e => e.Name).HasMaxLength(200);
                 entity.Property(e => e.Description).HasMaxLength(1000);
                 entity.Property(e => e.Price).HasPrecision(18, 2);

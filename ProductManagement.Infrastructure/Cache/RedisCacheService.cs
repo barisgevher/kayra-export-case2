@@ -51,7 +51,7 @@ namespace ProductManagement.Infrastructure.Cache
                 if (expiration.HasValue)
                     options.SetAbsoluteExpiration(expiration.Value);
                 else
-                    options.SetAbsoluteExpiration(TimeSpan.FromMinutes(30)); // Default 30 minutes
+                    options.SetAbsoluteExpiration(TimeSpan.FromMinutes(30));
 
                 await _distributedCache.SetStringAsync(key, serializedValue, options);
             }
