@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProductManagement.Application.DTOs;
 using ProductManagement.Application.Interfaces;
 
@@ -23,6 +24,7 @@ namespace ProductManagement.API.Controllers
         /// <param name="request">User registration details</param>
         /// <returns>Authentication response with JWT token</returns>
         [HttpPost("register")]
+        [AllowAnonymous]
         public async Task<ActionResult<AuthResponse>> Register([FromBody] RegisterRequest request)
         {
             try
@@ -47,6 +49,7 @@ namespace ProductManagement.API.Controllers
         /// <param name="request">User login credentials</param>
         /// <returns>Authentication response with JWT token</returns>
         [HttpPost("login")]
+        [AllowAnonymous]
         public async Task<ActionResult<AuthResponse>> Login([FromBody] LoginRequest request)
         {
             try
