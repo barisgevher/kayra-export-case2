@@ -79,6 +79,7 @@ namespace ProductManagement.API.Controllers
         /// </summary>
         /// <param name="request">Product creation details</param>
         /// <returns>Created product</returns>
+        /// Don't forget to add "Bearer" to swagger jwt authorization after login to authorize 
         [HttpPost]
         public async Task<ActionResult<ProductResponse>> CreateProduct([FromBody] ProductCreateRequest request)
         {

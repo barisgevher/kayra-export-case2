@@ -17,7 +17,7 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Serilog Configuration
+
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
     .Enrich.FromLogContext()
@@ -27,11 +27,10 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog();
 
-// Add services to the container
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Redis Configuration
 builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
 {
     var configuration = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis")!, true);
@@ -43,7 +42,7 @@ builder.Services.AddStackExchangeRedisCache(options =>
     options.Configuration = builder.Configuration.GetConnectionString("Redis");
 });
 
-// JWT Configuration
+
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var key = Encoding.UTF8.GetBytes(jwtSettings["Secret"]!);
 
@@ -65,24 +64,49 @@ builder.Services.AddAuthentication(options =>
         ValidateLifetime = true,
         ClockSkew = TimeSpan.Zero
     };
+
+
+    options.Events = new JwtBearerEvents
+    {
+        // Token doðrulama baþarýlý olduðunda bu olay tetiklenir.
+        OnTokenValidated = context =>
+        {
+            // Konsola bir baþarý mesajý yazdýralým.
+            Console.WriteLine("--- TOKEN BAÞARIYLA DOÐRULANDI ---");
+            Console.WriteLine($"Kullanýcý: {context.Principal?.Identity?.Name}");
+            return Task.CompletedTask;
+        },
+        // Token doðrulama BAÞARISIZ olduðunda bu olay tetiklenir.
+        OnAuthenticationFailed = context =>
+        {
+            // Hatanýn nedenini konsola yazdýrýyoruz. SORUNUN CEVABI BURADA!
+            Console.WriteLine("!!! KÝMLÝK DOÐRULAMA BAÞARISIZ OLDU !!!");
+            Console.WriteLine(context.Exception.ToString()); // Hatanýn tüm detaylarýný yazdýr.
+            return Task.CompletedTask;
+        }
+    };
+    // --- YENÝ BÖLÜM BÝTTÝ ---
 });
+
+
+
 
 builder.Services.AddAuthorization();
 
-// MediatR
+
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ProductManagement.Application.Commands.CreateProductCommand).Assembly));
 
-// Repository Pattern
+
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
-// Services
+
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<ICacheService, RedisCacheService>();
 
 builder.Services.AddControllers();
 
-// Swagger Configuration
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -98,7 +122,7 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 
-    // JWT Bearer Authentication
+    
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "JWT Authorization header using the Bearer scheme (Example: 'Bearer 12345abcdef')",
@@ -123,13 +147,13 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 
-    // XML Documentation
+   
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     c.IncludeXmlComments(xmlPath);
 });
 
-// CORS
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
@@ -142,7 +166,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -164,7 +188,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-// Database Migration
+
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
