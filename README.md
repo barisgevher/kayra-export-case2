@@ -39,13 +39,13 @@ Projenin doğru şekilde çalışabilmesi için sisteminizde aşağıdaki yazıl
     Öncelikle projenin kodlarını yerel makinenize klonlayın:
 
     ```bash
-    git clone https://github.com/barisgevher/kayra-export-case1.git
-    cd kayra-export-case1
+    git clone https://github.com/barisgevher/kayra-export-case2.git
+    cd kayra-export-case2
     # Eğer API projesi ana dizinde değilse, docker-compose.yml'nin bulunduğu dizine gidin.
     # Örneğin: cd ProductManagement
     ```
 
-    _Not: Yukarıdaki `cd` komutu, `docker-compose.yml` dosyanızın bulunduğu dizine gitmenizi sağlar. Eğer `kayra-export-case1` içinde başka bir `ProductManagement` klasörü varsa, o klasöre girmeniz gerekebilir._
+    _Not: Yukarıdaki `cd` komutu, `docker-compose.yml` dosyanızın bulunduğu dizine gitmenizi sağlar. Eğer `kayra-export-case2` içinde başka bir `ProductManagement` klasörü varsa, o klasöre girmeniz gerekebilir._
 
 2.  **`.env` Dosyasını Oluşturun:**
     `docker-compose.yml` dosyasının bulunduğu dizinde `.env` adında yeni bir dosya oluşturun ve içine aşağıdaki satırları ekleyin. Bu değişkenleri kendi istediğiniz değerlerle güncelleyin:
@@ -81,9 +81,9 @@ Projenin doğru şekilde çalışabilmesi için sisteminizde aşağıdaki yazıl
       ```
       Ardından aşağıdaki komutu kullanarak migrasyonları çalıştırın (API projenizin `csproj` dosyasının bulunduğu dizine göre yolu ayarlamanız gerekebilir):
       ```bash
-      docker exec productmanagement_api dotnet ef database update --project YourApiProjectName.csproj --startup-project YourApiProjectName.csproj
-      # YourApiProjectName.csproj yerine gerçek .csproj dosyanızın adını yazın.
-      # Örneğin: dotnet exec productmanagement_api dotnet ef database update --project ProductManagement.Api/ProductManagement.Api.csproj --startup-project ProductManagement.Api/ProductManagement.Api.csproj
+      docker exec productmanagement_api dotnet ef database update --project productManagement.csproj --startup-project productManagement.csproj
+    
+   
       ```
       Bu komutu çalıştırmadan önce `productmanagement-api` konteynerinin tamamen başlamış olduğundan emin olun.
 
@@ -92,7 +92,7 @@ Projenin doğru şekilde çalışabilmesi için sisteminizde aşağıdaki yazıl
 Servisler başarıyla başlatıldıktan sonra aşağıdaki adreslerden erişebilirsiniz:
 
 - **ProductManagement API:** `http://localhost:8000`
-  - API uç noktaları genellikle `/api/v1/...` gibi bir önekle başlar. Swagger/OpenAPI UI'a genellikle `http://localhost:8000/swagger` adresinden erişebilirsiniz (eğer API projenizde yapılandırılmışsa).
+  - API uç noktaları genellikle `/api/v1/...` gibi bir önekle başlar. Swagger/OpenAPI UI'a genellikle `http://localhost:8000/swagger` adresinden erişebilirsiniz.
 - **pgAdmin 4:** `http://localhost:8081`
   - Giriş için `.env` dosyasında belirlediğiniz `PGADMIN_EMAIL` ve `PGADMIN_PASSWORD` değerlerini kullanın.
   - pgAdmin'e giriş yaptıktan sonra, `productmanagement_postgres` servisine bağlanmak için yeni bir sunucu eklemeniz gerekecektir:
