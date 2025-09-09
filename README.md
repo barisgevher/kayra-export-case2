@@ -1,8 +1,8 @@
-# ProductManagement Projesi case 2
+# scalable service logic
 
 ## Giriş
 
-Bu proje, temel backend geliştirme prensiplerini, REST API oluşturma ve veritabanı işlemlerini ölçmek amacıyla geliştirilmiş bir "case study" projesidir. Uygulama, C# ve ASP.NET Core kullanılarak geliştirilmiş olup, veri depolama için PostgreSQL veritabanını ve önbellekleme/oturum yönetimi için Redis'i kullanmaktadır. Tüm servisler Docker ve Docker Compose ile yönetilmektedir.
+Bu proje, temel backend geliştirme prensiplerini, REST API oluşturma ve veritabanı işlemlerini ölçmek amacıyla geliştirilmiş bir  projedir. Uygulama, C# ve ASP.NET Core kullanılarak geliştirilmiş olup, veri depolama için PostgreSQL veritabanını ve önbellekleme/oturum yönetimi için Redis'i kullanmaktadır. Tüm servisler Docker ve Docker Compose ile yönetilmektedir.
 
 ## Kullanılan Teknolojiler
 
